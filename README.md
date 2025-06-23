@@ -1,4 +1,4 @@
-# NN that recognizes Johnson Solids
+# NN that recognises Johnson Solids
 Webscrape the images of the 92 Johnson solids from Wikipedia and train a Neural Network that is able to classify them, and given the image recognises the name of the solid.
 
 More information about Johnson solids [here](https://en.wikipedia.org/wiki/Johnson_solid)
