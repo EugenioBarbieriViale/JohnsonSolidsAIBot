@@ -113,27 +113,20 @@ class JS_Classifier(JS_Dataset, Webscrape):
             title = f'Predicted: "{predicted}", Actual: "{actual}"'
             self.open_image_file(actual, title, imgs_dir)
 
+    def show_model(self):
+        return self.NN().to(self.device)
+
     class NN(nn.Module):
         def __init__(self):
             super().__init__()
 
             self.flatten = nn.Flatten()
             self.stack = nn.Sequential(
-                # nn.Linear(64*64, 2048),
-                # nn.ReLU(),
-                # nn.Linear(2048, 1024),
-                # nn.ReLU(),
-                # nn.Linear(1024, 512),
-                # nn.ReLU(),
-                # nn.Linear(512, 92),
-
-                nn.Linear(64*64, 8192),
+                nn.Linear(64*64, 2048),
                 nn.ReLU(),
-                nn.Linear(8192, 4096),
+                nn.Linear(2048, 1024),
                 nn.ReLU(),
-                nn.Linear(4096, 2048),
-                nn.ReLU(),
-                nn.Linear(2048, 512),
+                nn.Linear(1024, 512),
                 nn.ReLU(),
                 nn.Linear(512, 92),
 
