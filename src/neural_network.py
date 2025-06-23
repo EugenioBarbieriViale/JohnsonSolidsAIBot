@@ -99,7 +99,7 @@ class JS_Classifier(JS_Dataset, Webscrape):
         self.model = self.NN().to(self.device)
         self.model.load_state_dict(torch.load(filename, weights_only=True))
 
-    def predict(self, idx, classes, imgs_dir="../data/images/"):
+    def predict(self, idx, classes, imgs_dir="../data/images/", plot=True):
         self.model.eval()
 
         x = self.trainset.dataset[idx][0]
@@ -111,7 +111,10 @@ class JS_Classifier(JS_Dataset, Webscrape):
             predicted, actual = classes[pred[0].argmax(0)], classes[y]
 
             title = f'Predicted: "{predicted}", Actual: "{actual}"'
-            self.open_image_file(actual, title, imgs_dir)
+            if plot:
+                self.open_image_file(actual, title, imgs_dir)
+
+            return predicted
 
     def show_model(self):
         return self.NN().to(self.device)
