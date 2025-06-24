@@ -1,5 +1,5 @@
 # @JohnsonSolidsAIBot
-JohnsonSolidsAIBot is a Telegram bot which you can challenge in recognising Johnson solids. I webscraped the images of the 92 Johnson solids from Wikipedia and trained a Neural Network that is able to classify them, and given the image recognises the name of the solid. Can you beat it?
+![JohnsonSolidsAIBot](https://t.me/JohnsonSolidsAIBot) is a Telegram bot which you can challenge in recognising Johnson solids. I webscraped the images of the 92 Johnson solids from Wikipedia and trained a Neural Network that is able to classify them, and given the image recognises the name of the solid. Can you beat it?
 
 There are different versions of the model, from veary easy (trained with only 100 epochs, with 85.9% accuracy) to impossible (2500 epochs, 100.0% accuracy)
 
