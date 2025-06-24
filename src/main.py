@@ -81,32 +81,36 @@ def choose_level(message):
     markup.add(l1, l2, l3, l4, l5)
     bot.reply_to(message, "Choose a level:", reply_markup=markup)
 
-    markup = types.ReplyKeyboardRemove(selective=False)
 
 @bot.message_handler(commands=[levels[0]])
 def load_l1(message):
     nn.load(filename="../models/linear_100.pth")
-    bot.reply_to(message, f"Loaded {levels[0]} version")
+    markup = types.ReplyKeyboardRemove(selective=False)
+    bot.reply_to(message, f"Loaded {levels[0].replace('_', ' ')} version", reply_markup=markup)
 
 @bot.message_handler(commands=[levels[1]])
 def load_l2(message):
     nn.load(filename="../models/linear_250.pth")
-    bot.reply_to(message, f"Loaded {levels[1]} version")
+    markup = types.ReplyKeyboardRemove(selective=False)
+    bot.reply_to(message, f"Loaded {levels[1].replace('_', ' ')} version", reply_markup=markup)
 
 @bot.message_handler(commands=[levels[2]])
 def load_l3(message):
     nn.load(filename="../models/linear_500.pth")
-    bot.reply_to(message, f"Loaded {levels[2]} version")
+    markup = types.ReplyKeyboardRemove(selective=False)
+    bot.reply_to(message, f"Loaded {levels[2].replace('_', ' ')} version", reply_markup=markup)
 
 @bot.message_handler(commands=[levels[3]])
 def load_l4(message):
     nn.load(filename="../models/linear_1000.pth")
-    bot.reply_to(message, f"Loaded {levels[3]} version")
+    markup = types.ReplyKeyboardRemove(selective=False)
+    bot.reply_to(message, f"Loaded {levels[3].replace('_', ' ')} version", reply_markup=markup)
 
 @bot.message_handler(commands=[levels[4]])
 def load_l5(message):
     nn.load(filename="../models/linear_2500.pth")
-    bot.reply_to(message, f"Loaded {levels[4]} version")
+    markup = types.ReplyKeyboardRemove(selective=False)
+    bot.reply_to(message, f"Loaded {levels[4].replace('_', ' ')} version", reply_markup=markup)
 
 score = 0
 ai_score = 0
@@ -116,7 +120,7 @@ def reset(message):
     global score, ai_score
     score = 0
     ai_score = 0
-    bot.reply_to(message, f"Your score is: {score} \n AI's score is: {ai_score}")
+    bot.reply_to(message, f"Your score is: {score}\nAI's score is: {ai_score}")
 
 @bot.message_handler(commands=["play", "p"])
 def play(message):
@@ -139,20 +143,21 @@ def play(message):
     o1 = types.KeyboardButton("/" + options[0])
     o2 = types.KeyboardButton("/" + options[1])
     o3 = types.KeyboardButton("/" + options[2])
-    markup.add(o1, o2, o3)
+    markup.add(o1, o2, o3)  
 
     bot.reply_to(message, "Choose an option:", reply_markup=markup)
 
-    @bot.message_handler(commands=options)
+    @bot.message_handler(func=lambda message: True)
     def verify(message):
         global score, ai_score
         nonlocal idx
 
+        markup = types.ReplyKeyboardRemove(selective=False)
         if message.text[1:] == correct:
-            bot.reply_to(message, "Correct!")
+            bot.reply_to(message, "Correct!", reply_markup=markup)
             score += 1
         else:
-            bot.reply_to(message, "Incorrect!")
+            bot.reply_to(message, "Incorrect!", reply_markup=markup)
             if score != 0:
                 score -= 1
 
@@ -163,10 +168,9 @@ def play(message):
             if ai_score != 0:
                 ai_score -= 1
 
-        bot.send_message(message.chat.id, f"AI answered: {predicted}")
-        bot.send_message(message.chat.id, f"The right answer is: {correct}")
+        bot.send_message(message.chat.id, f"You answered: {message.text[1:]}\nAI answered: {predicted}\n\nThe right answer is: {correct}")
 
-        bot.send_message(message.chat.id, f"Your score is: {score} \n AI's score is: {ai_score}")
+        bot.send_message(message.chat.id, f"Your score is: {score} \nAI's score is: {ai_score}")
 
 
 print("Bot is up!")
