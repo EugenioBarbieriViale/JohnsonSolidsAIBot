@@ -72,23 +72,6 @@ class Webscrape:
                 with open(filename, 'wb') as file:
                     file.write(img_data)
 
-    def get_image_urls(self):
-        self.call()
-        all_img = self.soup.find_all("img", class_="mw-file-element")
-
-        img_urls = []
-        for a in all_img:
-            if "commons" in a["src"]:
-                img_url = "https:" + a["src"]
-
-                img_url = img_url.replace("thumb/", "")
-                img_url = img_url.split("/120", 1)[0]
-                print(img_url)
-
-                img_urls.append([img_url])
-
-        return img_urls
-
     def open_image_file(self, name, title, _dir):
         if "bipyramid" in name:
             name = name.replace("bipyramid", "dipyramid")

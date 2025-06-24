@@ -12,49 +12,22 @@ import levels_bot
 
 dirname = "../data/"
 
-f1 = dirname + "names.csv"
-f2 = dirname + "image_urls.csv"
+names_file = dirname + "names.csv"
 imgs_dir = dirname + "images/" # remember to put / at the end
-
-epochs = 2500
-# epochs = 1000
-# epochs = 500
-# epochs = 250
-# epochs = 100
-
-root = f"linear_{epochs}"
-
-model_file = f"../models/{root}.pth"
-graph_name = f"../graphs/{root}.png"
-
 
 w = webscrape.Webscrape()
 
-if not path.isfile(f1):
+if not path.isfile(names_file):
     names = w.get_names()
-    w.save(f1, names)
-    print("Names saved to file", f1)
-
-if not path.isfile(f2):
-    urls = w.get_image_urls()
-    w.save(f2, urls)
-    print("URLs saved to file", f2)
+    w.save(name_files, names)
+    print("Names saved to file", names_file)
 
 if not path.isdir(imgs_dir):
     mkdir(imgs_dir)
     w.download_images(imgs_dir)
     print("Images downloaded to directory:", imgs_dir)
 
-names = pd.read_csv(f1).values.flatten()
-
-def run(names):
-    index = randint(0, 91)
-
-    nn.learn(epochs=epochs, filename=model_file, imgname=graph_name, save=True)
-    nn.load(filename=model_file)
-
-    nn.test()
-    nn.predict(index, names)
+names = pd.read_csv(names_file).values.flatten()
 
 nn = neural_network.JS_Classifier()
 
