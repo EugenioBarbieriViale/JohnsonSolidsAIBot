@@ -35,32 +35,32 @@ def show_bot_level(idx):
     }
 
     if idx == 1:
-        sa = "difficulty: " + level1["name"] + "\n" 
-        sb = "epochs: " + level1["epochs"] + "\n" 
-        sc = "accuracy: " + level1["accuracy"] + "\n"
-        sd = "average loss: " + level1["average loss"] + "\n"
-        return sa + sb + sc + sd
+        s  = "difficulty: " + level1["name"] + "\n" 
+        s += "epochs: " + level1["epochs"] + "\n" 
+        s += "accuracy: " + level1["accuracy"] + "\n"
+        s += "average loss: " + level1["average loss"] + "\n"
+        return s
     elif idx == 2:
-        sa = "difficulty: " + level2["name"] + "\n" 
-        sb = "epochs: " + level2["epochs"] + "\n" 
-        sc = "accuracy: " + level2["accuracy"] + "\n"
-        sd = "average loss: " + level2["average loss"] + "\n"
-        return sa + sb + sc + sd
+        s = "difficulty: " + level2["name"] + "\n" 
+        s += "epochs: " + level2["epochs"] + "\n" 
+        s += "accuracy: " + level2["accuracy"] + "\n"
+        s += "average loss: " + level2["average loss"] + "\n"
+        return s
     elif idx == 3:
-        sa = "difficulty: " + level3["name"] + "\n" 
-        sb = "epochs: " + level3["epochs"] + "\n" 
-        sc = "accuracy: " + level3["accuracy"] + "\n"
-        sd = "average loss: " + level3["average loss"] + "\n"
-        return sa + sb + sc + sd
+        s = "difficulty: " + level3["name"] + "\n" 
+        s += "epochs: " + level3["epochs"] + "\n" 
+        s += "accuracy: " + level3["accuracy"] + "\n"
+        s += "average loss: " + level3["average loss"] + "\n"
+        return s
     elif idx == 4:
-        sa = "difficulty: " + level4["name"] + "\n" 
-        sb = "epochs: " + level4["epochs"] + "\n" 
-        sc = "accuracy: " + level4["accuracy"] + "\n"
-        sd = "average loss: " + level4["average loss"] + "\n"
-        return sa + sb + sc + sd
+        s = "difficulty: " + level4["name"] + "\n" 
+        s += "epochs: " + level4["epochs"] + "\n" 
+        s += "accuracy: " + level4["accuracy"] + "\n"
+        s += "average loss: " + level4["average loss"] + "\n"
+        return s
     else:
-        sa = "difficulty: " + level5["name"] + "\n" 
-        sb = "epochs: " + level5["epochs"] + "\n" 
-        sc = "accuracy: " + level5["accuracy"] + "\n"
-        sd = "average loss: " + level5["average loss"] + "\n"
-        return sa + sb + sc + sd
+        s = "difficulty: " + level5["name"] + "\n" 
+        s += "epochs: " + level5["epochs"] + "\n" 
+        s += "accuracy: " + level5["accuracy"] + "\n"
+        s += "average loss: " + level5["average loss"] + "\n"
+        return s
