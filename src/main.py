@@ -1,4 +1,8 @@
-from os import path, mkdir
+from os import path, mkdir, execv
+import sys
+from requests.exceptions import ConnectionError, ReadTimeout
+
+from datetime import datetime
 import pandas as pd
 from random import randint, shuffle
 
@@ -39,8 +43,15 @@ bot = telebot.TeleBot(token, parse_mode=None)
 
 @bot.message_handler(commands=["start"])
 def send_welcome(message):
-    bot.send_message(message.chat.id, "Welcome! Are you ready to challenge AI in recognising Johnson solids?", parse_mode="Markdown")
+    username = str(message.from_user.username)
+
+    bot.send_message(message.chat.id, f"Welcome @{username}! Are you ready to challenge AI in recognising Johnson solids?", parse_mode="Markdown")
     bot.send_message(message.chat.id, "Type /help to list possible commands", parse_mode="Markdown")
+
+    d = str(datetime.now())
+    with open("../users.txt", "a") as f:
+        print(f"{username} has connected - {d}")
+        f.write(username + ": " + d + "\n")
 
 @bot.message_handler(commands=["help", "h"])
 def help(message):
@@ -84,33 +95,43 @@ def choose_level(message):
 
 @bot.message_handler(commands=[levels[0]])
 def load_l1(message):
+    username = str(message.from_user.username)
     nn.load(filename="../models/linear_100.pth")
     markup = types.ReplyKeyboardRemove(selective=False)
     bot.reply_to(message, f"Loaded {levels[0].replace('_', ' ')} version", reply_markup=markup)
+    print(f"{username} has loaded very easy model")
 
 @bot.message_handler(commands=[levels[1]])
 def load_l2(message):
+    username = str(message.from_user.username)
     nn.load(filename="../models/linear_250.pth")
     markup = types.ReplyKeyboardRemove(selective=False)
     bot.reply_to(message, f"Loaded {levels[1].replace('_', ' ')} version", reply_markup=markup)
+    print(f"{username} has loaded easy model")
 
 @bot.message_handler(commands=[levels[2]])
 def load_l3(message):
+    username = str(message.from_user.username)
     nn.load(filename="../models/linear_500.pth")
     markup = types.ReplyKeyboardRemove(selective=False)
     bot.reply_to(message, f"Loaded {levels[2].replace('_', ' ')} version", reply_markup=markup)
+    print(f"{username} has loaded medium model")
 
 @bot.message_handler(commands=[levels[3]])
 def load_l4(message):
+    username = str(message.from_user.username)
     nn.load(filename="../models/linear_1000.pth")
     markup = types.ReplyKeyboardRemove(selective=False)
     bot.reply_to(message, f"Loaded {levels[3].replace('_', ' ')} version", reply_markup=markup)
+    print(f"{username} has loaded difficult model")
 
 @bot.message_handler(commands=[levels[4]])
 def load_l5(message):
+    username = str(message.from_user.username)
     nn.load(filename="../models/linear_2500.pth")
     markup = types.ReplyKeyboardRemove(selective=False)
     bot.reply_to(message, f"Loaded {levels[4].replace('_', ' ')} version", reply_markup=markup)
+    print(f"{username} has loaded impossible model")
 
 score = 0
 ai_score = 0
@@ -122,9 +143,13 @@ def reset(message):
     ai_score = 0
     bot.reply_to(message, f"Your score is: {score}\nAI's score is: {ai_score}")
 
+idxs = []
+
 @bot.message_handler(commands=["play", "p"])
 def play(message):
+    username = str(message.from_user.username)
     idx = randint(1, 89)
+    idxs.append(idx)
 
     correct = str(names[idx]).replace(" ", "_")
     options = [str(names[idx-1]).replace(" ", "_"), correct, str(names[idx+1]).replace(" ", "_")]
@@ -146,11 +171,13 @@ def play(message):
     markup.add(o1, o2, o3)  
 
     bot.reply_to(message, "Choose an option:", reply_markup=markup)
+    print(f"{username} is playing: score: {score}, ai_score: {ai_score}")
 
     @bot.message_handler(func=lambda message: True)
     def verify(message):
         global score, ai_score
-        nonlocal idx
+
+        idx = idxs[-1]
 
         markup = types.ReplyKeyboardRemove(selective=False)
         if message.text[1:] == correct:
@@ -174,4 +201,11 @@ def play(message):
 
 
 print("Bot is up!")
-bot.infinity_polling()
+
+try:
+    bot.infinity_polling(timeout=1000000, long_polling_timeout=5)
+except (ConnectionError, ReadTimeout) as e:
+    sys.stdout.flush()
+    os.execv(sys.argv[0], sys.argv)
+else:
+    bot.infinity_polling(timeout=1000000, long_polling_timeout=5)
